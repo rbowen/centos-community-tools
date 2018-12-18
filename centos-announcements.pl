@@ -5,7 +5,10 @@ use warnings;
 use LWP::Simple qw(get);
 usage() unless $ARGV[0] && $ARGV[1];
 
-# TODO use the current year, month, automatically.
+# Start scheduling them today
+my $mday = (localtime(time))[3];
+my $mon = (localtime(time))[4] + 1; # Months are zero-based?!
+
 my $year = $ARGV[0];
 my $month = $ARGV[1];
 
@@ -21,7 +24,7 @@ unless ($html) {
     exit();
 }
 
-open (my $tweets, '>', 'announce_tweets.txt' );
+open (my $tweets, '>', 'announce_tweets.csv' );
 open (my $news, '>', 'announce_newsletter.txt' );
 my (@ceea, @cesa, @ceba, @other);
 
@@ -32,7 +35,6 @@ foreach my $line (@html) {
 # <LI><A HREF="023019.html">[CentOS-announce] CEEA-2018:2675 CentOS 6 microcode_ctl ...
 # print "Considering $line\n";
     next unless $line =~ m/<LI><A HREF/;
-# print "PASSED\n";
 
     my ( $filename, $subject ) = ( $line =~ m/HREF="(.+?\.html).+? (.*)$/ );
     $subject =~ s/\s*Update$//;
@@ -42,26 +44,14 @@ foreach my $line (@html) {
     my $email = get ( $baseurl . '/' . $filename );
     my ( $date ) = ( $email =~ m!<I>(.+?)</I>! );
 
-    # First line after <!--beginarticle-->\n<PRE>\n ...
-#    my ( $title ) = ( $email =~ m~<!--beginarticle-->\n<PRE>\n(.+?)\n~);
-
-    # Some messages are ... different
-#    unless ($title) {
-#        print "\nThis message wasn't formatted like we expected. See message titled \"$subject\" for more details.\n";
-#
-#        print "Best effort:\n";
-#        print "$subject. Details at $baseurl/$filename #CentOS #Updates\n";
-#        next;
-#    }
-
-#    $title =~ s/\s*$//;
-#    $title =~ s/\s*/ /g;
+    # The time isn't particularly important ...
+    $date =~ s! \d\d:\d\d:\d\d ...!!;
 
     my $t = "On $date we issued the following update: $subject. Details at $baseurl/$filename #CentOS #Updates";
     print $t . "\n";
-    print $tweets "\"01/01/$year 09:00:00\",\"$t\"\n";
+    print $tweets "\"$mon/$mday/$year 09:00\",\"$t\"\n";
 
-    my $announce = "<li>$subject - <a href=\"$baseurl/$filename\">$baseurl/$filename</a></li>";
+    my $announce = "<li>$date: $subject - <a href=\"$baseurl/$filename\">$baseurl/$filename</a></li>";
 
     push (@cesa, $announce) if $subject =~ m/CESA/;
     push (@ceea, $announce) if $subject =~ m/CEEA/;
