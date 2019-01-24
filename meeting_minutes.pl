@@ -14,25 +14,29 @@ usage() unless $year =~ m/\d\d\d\d/;
 my $url = 'https://www.centos.org/minutes/' . $year . '/' . $month;
 my $html = get $url;
 
+if ($html) {
 my @html=split(/\n/, $html);
-foreach my $line(@html) {
+    foreach my $line(@html) {
 
-    # Looking for meeting minutes like centos-devel.2018-09-04-13.01.html
-    next unless $line =~ m/centos-devel\.$year-\d\d-\d\d-\d\d\.\d\d\.html/;
+        # Looking for meeting minutes like centos-devel.2018-09-04-13.01.html
+        next unless $line =~ m/centos-devel\.$year-\d\d-\d\d-\d\d\.\d\d\.html/;
 
-    $line =~ s/^.+href="//;
+        $line =~ s/^.+href="//;
 
-    my ($filename, $date) = ( $line =~ m/^(.+?)".+?"right">(.+?) / );
+        my ($filename, $date) = ( $line =~ m/^(.+?)".+?"right">(.+?) / );
 
-    # On $date, there are meeting minutes in $filename. What SIG was that?
-    my $minutesurl = $url . "/$filename";
-    my $minutes = get $minutesurl;
+        # On $date, there are meeting minutes in $filename. What SIG was that?
+        my $minutesurl = $url . "/$filename";
+        my $minutes = get $minutesurl;
 
-    # print $minutes;
-    my ($title) = ( $minutes =~ m!<h1>#centos-devel: (.*?)</h1>! );
-    
-    print "Meeting minutes from the $title, $date - $minutesurl  #CentOS #SIG\n";
+        # print $minutes;
+        my ($title) = ( $minutes =~ m!<h1>#centos-devel: (.*?)</h1>! );
+        
+        print "Meeting minutes from the $title, $date - $minutesurl  #CentOS #SIG\n";
 
+    }
+} else {
+    print "There appear to be no meeting minutes for that month. See $url to confirm.\n";
 }
 
 sub usage {
