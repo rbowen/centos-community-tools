@@ -7,7 +7,7 @@ use LWP::Simple qw(get);
 
 use Getopt::Long qw(GetOptions);
 my $help=0;
-GetOptions("help" => \$help) or die "Usage: $0 -h for usage\n";
+GetOptions("help" => \$help) or help();
 help() if $help;
 
 # Start scheduling them today
