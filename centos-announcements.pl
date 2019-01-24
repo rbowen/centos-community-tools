@@ -1,18 +1,23 @@
 #!/usr/bin/perl
 use strict;
 use warnings;
+use DateTime;
 
 use LWP::Simple qw(get);
-usage() unless $ARGV[0] && $ARGV[1];
+
+use Getopt::Long qw(GetOptions);
+my $help=0;
+GetOptions("help" => \$help) or die "Usage: $0 -h for usage\n";
+help() if $help;
 
 # Start scheduling them today
-my $mday = (localtime(time))[3];
-my $mon = (localtime(time))[4] + 1; # Months are zero-based?!
+my $dt = DateTime->now( time_zone => 'local' );
+my $mday = $dt->day();
+my $mon = $dt->month();
 
-my $year = $ARGV[0];
-my $month = $ARGV[1];
-
-usage() unless $year =~ m/\d\d\d\d/;
+# Which month are we reporting on?
+my $year = $ARGV[0] || $dt->year();
+my $month = $ARGV[1] || $dt->month_name();
 
 my $baseurl = 'https://lists.centos.org/pipermail/centos-announce/' .  $year . '-' . $month;
 my $url = $baseurl . '/thread.html';
@@ -91,8 +96,9 @@ We issued the following $acro (CentOS Errata and $name Advisories) during $month
 
 }
 
-sub usage {
+sub help {
     print "Usage: $0 YEAR MONTH - eg, $0 2018 September\n";
+    print "Defaults to current month of none specified.\n";
     exit();
 }
 
