@@ -56,7 +56,10 @@ overview of releases and community activity over the preceding few
 months. https://blog.centos.org/2019/01/centos-cloud-sig-quarterly-report/
 
 Reports can be submitted either directly to me, or, if you prefer, you
-can submit it as a blog post on blog.centos.org
+can submit it as a blog post on blog.centos.org.
+
+See https://wiki.centos.org/SpecialInterestGroup/Promo/Blog for details
+about posting to the CentOS blog.
 
 The report will be included in the $month community newsletter. As
 such I need it by $month 1st, at the very latest.
