@@ -24,7 +24,7 @@ my $dt = DateTime->now( time_zone => 'local' )->add( months => 1 );
 my $month = $dt->month_name;
 print "Next month is $month.\n";
 
-my $group = $dt->month() % 3;
+my $group = ( ($dt->month() % 3) || 3 );
 
 print "We expect reports from SIGs in Group " . $group . ":\n\n";
 
