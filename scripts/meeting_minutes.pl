@@ -20,8 +20,8 @@ if ($html) {
 my @html=split(/\n/, $html);
     foreach my $line(@html) {
 
-        # Looking for meeting minutes like centos-devel.2018-09-04-13.01.html
-        next unless $line =~ m/centos-devel\.$year-\d\d-\d\d-\d\d\.\d\d\.html/;
+        # Looking for meeting minutes like centos-meeting.2018-09-04-13.01.html
+        next unless $line =~ m/centos-meeting\.$year-\d\d-\d\d-\d\d\.\d\d\.html/;
 
         $line =~ s/^.+href="//;
 
@@ -32,7 +32,7 @@ my @html=split(/\n/, $html);
         my $minutes = get $minutesurl;
 
         # print $minutes;
-        my ($title) = ( $minutes =~ m!<h1>#centos-devel: (.*?)</h1>! );
+        my ($title) = ( $minutes =~ m!<h1>#centos-meeting: (.*?)</h1>! );
         
         print "Meeting minutes from the $title, $date - $minutesurl  #CentOS #SIG\n";
 
