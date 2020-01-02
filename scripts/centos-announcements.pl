@@ -13,6 +13,7 @@ help() if $help;
 # Start scheduling them today
 my $dt = DateTime->now( time_zone => 'local' );
 my $mday = $dt->day();
+my $start_mday = $mday;
 my $mon = $dt->month();
 
 # Which month are we reporting on?
@@ -39,15 +40,19 @@ foreach my $line (@html) {
 # Looking for lines like
 # <LI><A HREF="023019.html">[CentOS-announce] CEEA-2018:2675 CentOS 6 microcode_ctl ...
 # print "Considering $line\n";
-    next unless $line =~ m/<LI><A HREF/;
+    next unless $line =~ m/^  <a href.+CentOS-announce/;
 
-    my ( $filename, $subject ) = ( $line =~ m/HREF="(.+?\.html).+? (.*)$/ );
-    $subject =~ s/\s*Update$//;
+    my ( $filename, $subject ) = ( $line =~ m/href="(.+?\.html).+? (.*)$/ );
+    $subject =~ s/\s*Update.+$//;
+
+    # Some of the subject lines can be wonky ...
+    $subject =~ s!</a>.+$!!;
+
     $subject =~ s/\s+/ /g;
 
     # We need a little information from that post
     my $email = get ( $baseurl . '/' . $filename );
-    my ( $date ) = ( $email =~ m!<I>(.+?)</I>! );
+    my ( $date ) = ( $email =~ m!<em>(.+?)</em>! );
 
     # The time isn't particularly important ...
     $date =~ s! \d\d:\d\d:\d\d ...!!;
@@ -55,6 +60,7 @@ foreach my $line (@html) {
     my $t = "On $date we issued the following update: $subject. Details at $baseurl/$filename #CentOS #Updates";
     print $t . "\n";
     print $tweets "\"$mon/$mday/$year 09:00\",\"$t\"\n";
+    $mday++; $mday = $start_mday if $mday > 30;
 
     my $announce = "<li>$date: $subject - <a href=\"$baseurl/$filename\">$baseurl/$filename</a></li>";
 
