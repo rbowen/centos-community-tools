@@ -1,17 +1,17 @@
 #!/usr/bin/python
 import datetime
 from datetime import date
-import urllib2
+import urllib.request
 import json
 import time
 import re
 
 # Magic
 import sys    # sys.setdefaultencoding is cancelled by site.py
-reload(sys)    # to re-enable sys.setdefaultencoding()
-sys.setdefaultencoding('utf-8')
+# reload(sys)    # to re-enable sys.setdefaultencoding()
+# sys.setdefaultencoding('utf-8')
 
-print "Rounding up the ponies ..."
+print ("Rounding up the ponies ...")
 
 # NOTE: This is Rich's personal API key. Get your own.
 key = "3a7711454d145e404e531c2ee6f391d"
@@ -19,23 +19,24 @@ key = "3a7711454d145e404e531c2ee6f391d"
 keyword = sys.argv[1] if len(sys.argv) >= 2 else 'linux'
 url = "https://api.meetup.com/2/open_events?&sign=true&photo-host=public&state=ky&city=lexington&country=usa&text=" + keyword + "&radius=10000&sign=true&key=" + key
 
+print(url)
 week = 7
 twoweek = 14
 now = datetime.datetime.now()
 nowts  = time.mktime(now.timetuple())
 
-print "Fetching meetups ..."
+print ("Fetching meetups ...")
 
-response = urllib2.urlopen(url)
-m = response.read()
+response = urllib.request.urlopen(url)
+m = response.read().decode('utf-8')
 
-print "Parsing results ..."
+print ("Parsing results ...")
 r = json.loads(m)
 meetups = r['results']
 
 groups = {}
 
-print "Fetching group details ..."
+print ("Fetching group details ...")
 
 for meetup in meetups:
     groups[ str( meetup['group']['id'] ) ] = meetup['group']['name']
@@ -57,7 +58,7 @@ for g in grps:
 
 seen = set()
 
-print "Ok, ready to print meetup details ..."
+print ("Ok, ready to print meetup details ...")
 
 weeklater = (nowts * 1000 ) + ( week * 86400 * 1000 )
 twoweeklater = (nowts * 1000 ) + ( twoweek * 86400 * 1000 )
@@ -163,4 +164,4 @@ tweets.close()
 mlist.close()
 yml.close()
 
-print "Done!\n"
+print ("Done!\n")
