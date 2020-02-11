@@ -6,6 +6,7 @@ import re
 
 feeds = [
         'centosproject',
+        'centos'
         ];
 for feed in feeds:
     response = urllib.request.urlopen('https://twitter.com/' + feed)
