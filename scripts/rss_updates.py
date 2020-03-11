@@ -26,8 +26,8 @@ def read_release_feed():
             'centos-8-x86_64-cr',
 
             # 8 everything else
-            'centos-8-aarch64-AppStream',
             'centos-8-aarch64-BaseOS',
+            'centos-8-aarch64-AppStream',
             'centos-8-aarch64-PowerTools',
             'centos-8-aarch64-centosplus',
             'centos-8-aarch64-cr',
@@ -38,8 +38,8 @@ def read_release_feed():
             'centos-8-ppc64le-cr',
 
             # Stream
-            'centos-8-stream-aarch64-AppStream',
             'centos-8-stream-aarch64-BaseOS',
+            'centos-8-stream-aarch64-AppStream',
             'centos-8-stream-aarch64-PowerTools',
             'centos-8-stream-ppc64le-AppStream',
             'centos-8-stream-ppc64le-BaseOS',
