@@ -12,6 +12,7 @@ db = db_connection.cursor()
 # db.execute('DROP TABLE centosupdates')
 
 db.execute('CREATE TABLE IF NOT EXISTS centosupdates (title TEXT, id TEXT)')
+out = open('rss_updates.txt', 'w')
 
 def read_release_feed():
     """ Get releases from RSS feed """
@@ -52,7 +53,8 @@ def read_release_feed():
     for f in feeds:
         count = 0
         feed = feedparser.parse(feedbase + f + '.xml')
-        print("New releases in " + f + ":")
+        print("Checking new releases in " + f + "                         ", end="\r")
+        out.write("New releases in " + f + ":")
 
         for release in feed['entries']:
             if release_is_not_db(release['title'], release['id']):
@@ -61,8 +63,9 @@ def read_release_feed():
                 count += 1
 
         if (count == 0):
-            print("No new releases in " + f + "\n")
+            out.write("No new releases in " + f + "\n")
 
+    print("See rss_updates.txt for results                                           \n")
 
 def release_is_not_db(release_title, release_id):
     """ Check if we've already seen a release
@@ -93,7 +96,7 @@ def add_release_to_db(release_title, release_id):
 
 def format_release( release ):
     """ Prettyprint the release info """
-    print("\n" + release['published'] + ": " + release['title'])
+    out.write("\n" + release['published'] + ": " + release['title'])
 
     """ Strip HTML, special chars """
     summary = re.sub('<[^<]+?>', '', release['summary'])
@@ -103,10 +106,12 @@ def format_release( release ):
     """ Drop everything past the first (most recent) Change Log: entry """
     summary = re.sub('(Change Log:\n\n.*?)\n\n.*$', r'\1', summary, flags=re.S)
 
-    print(summary)
-    print("\n\n")
+    out.write(summary)
+    out.write("\n\n")
+    print(".", end ="", flush=True)
 
 if __name__ == '__main__':
     read_release_feed()
     db_connection.close()
+    out.close()
 
