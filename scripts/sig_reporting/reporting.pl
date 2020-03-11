@@ -41,6 +41,8 @@ foreach my $sig ( @{ $reporters{$group} } ) {
     print qq~
 --------------------------------------------------
 
+SUBJECT: CentOS $sig SIG quarterly report for $month newsletter
+
 Dear $sig SIG,
 
 As documented in the wiki, we request that each SIG reports quarterly
