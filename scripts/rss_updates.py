@@ -12,10 +12,11 @@ db = db_connection.cursor()
 # db.execute('DROP TABLE centosupdates')
 
 db.execute('CREATE TABLE IF NOT EXISTS centosupdates (title TEXT, id TEXT)')
-out = open('rss_updates.txt', 'w')
+out  = open('rss_updates.txt', 'w')
+html = open('rss_updates.html', 'w')
 
 def read_release_feed():
-    """ Get releases from RSS feed """
+    """ Get packages from RSS feed """
     feedbase = 'https://feeds.centos.org/';
     feeds = [
 
@@ -50,11 +51,19 @@ def read_release_feed():
             'centos-8-stream-x86_64-PowerTools'
 
             ]
+
+    # HTML headers
+    html.write("<ul>\n");
+    for f in feeds:
+        html.write("<li><a href='#" + f + "'>" + f + "</a></li>\n");
+    html.write("</ul>\n");
+
     for f in feeds:
         count = 0
         feed = feedparser.parse(feedbase + f + '.xml')
-        print("Checking new releases in " + f + "                         ", end="\r")
-        out.write("New releases in " + f + ":")
+        print("Checking new packages in " + f + "                         ", end="\r")
+        out.write("New packages in " + f + ":")
+        html.write("<a name='" + f + "'><h2>New packages in " + f + "</h2></a>")
 
         for release in feed['entries']:
             if release_is_not_db(release['title'], release['id']):
@@ -63,9 +72,10 @@ def read_release_feed():
                 count += 1
 
         if (count == 0):
-            out.write("No new releases in " + f + "\n")
+            out.write("\nNo new packages in " + f + "\n\n")
+            html.write("<p>No new packages in " + f + "</p>\n")
 
-    print("See rss_updates.txt for results                                           \n")
+    print("See rss_updates.txt and rss_updates.html for results                                           \n")
 
 def release_is_not_db(release_title, release_id):
     """ Check if we've already seen a release
@@ -97,6 +107,7 @@ def add_release_to_db(release_title, release_id):
 def format_release( release ):
     """ Prettyprint the release info """
     out.write("\n" + release['published'] + ": " + release['title'])
+    html.write("\n<h3>" + release['published'] + ": " + release['title'] + "</h3>")
 
     """ Strip HTML, special chars """
     summary = re.sub('<[^<]+?>', '', release['summary'])
@@ -107,11 +118,15 @@ def format_release( release ):
     summary = re.sub('(Change Log:\n\n.*?)\n\n.*$', r'\1', summary, flags=re.S)
 
     out.write(summary)
+    html.write(release['summary'])
     out.write("\n\n")
+    html.write("\n\n")
     print(".", end ="", flush=True)
 
 if __name__ == '__main__':
+
     read_release_feed()
     db_connection.close()
     out.close()
+    html.close()
 
