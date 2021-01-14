@@ -5,7 +5,9 @@ use DateTime;
 
 my %reporters = (
     1 => [
-        'Core', 'Config Management', 'PaaS', 'Software Collections',
+        'Core', 'Config Management',
+        'PaaS', 'Software Collections',
+        'Hyperscale'
     ],
 
     2 => [ 'Alt Arch', 'Cloud', 'NFV', 'Promo', 'Storage', ],
@@ -14,7 +16,7 @@ my %reporters = (
         'Artwork',  'Cloud Instance',
         'OpsTools', 'Public CI',
         'Virtualization',
-      ]
+    ]
 
 );
 
