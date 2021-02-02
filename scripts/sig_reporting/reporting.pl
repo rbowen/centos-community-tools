@@ -7,15 +7,15 @@ my %reporters = (
     1 => [
         'Core', 'Config Management',
         'PaaS', 'Software Collections',
-        'Hyperscale'
+        'Hyperscale',
     ],
 
-    2 => [ 'Alt Arch', 'Cloud', 'NFV', 'Promo', 'Storage', ],
+    2 => [ 'Alt Arch', 'Cloud', 'NFV', 'Promo', 'Storage', 'Messaging', ],
 
     3 => [
-        'Artwork',  'Cloud Instance',
-        'OpsTools', 'Public CI',
-        'Virtualization',
+        'Artwork',        'Cloud Instance',
+        'OpsTools',       'Public CI',
+        'Virtualization', 'Infrastructure',
     ]
 
 );
