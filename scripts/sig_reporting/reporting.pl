@@ -20,8 +20,11 @@ my %reporters = (
 
 );
 
+my @sigs;
+
 # Who is reporting next month?
-my $dt = DateTime->now( time_zone => 'local' )->add( months => 1 );
+# my $dt = DateTime->now( time_zone => 'local' )->add( months => 1 );
+my $dt = DateTime->now( time_zone => 'local' );
 
 my $month = $dt->month_name;
 print "Next month is $month.\n";
@@ -32,6 +35,7 @@ print "We expect reports from SIGs in Group " . $group . ":\n\n";
 
 foreach my $sig ( @{ $reporters{$group} } ) {
     print "  * $sig\n";
+    push @sigs, $sig;
 }
 
 print "\n";
@@ -72,4 +76,9 @@ Thanks!
 
 ~;
 
+}
+
+print "Summary: reports expected from\n";
+foreach my $sig (@sigs) {
+    print "  * $sig\n";
 }
