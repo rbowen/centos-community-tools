@@ -47,4 +47,3 @@ sub help {
     print "Defaults to current month of none specified.\n";
     exit();
 }
-
