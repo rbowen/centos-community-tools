@@ -5,10 +5,13 @@ use DateTime;
 
 my %reporters = (
     1 => [
-        [ 'Core',                 'sig-core@centosproject.org' ],
-        [ 'Config Management',    'sig-configmanagement@centosproject.org' ],
-        [ 'Software Collections', 'sig-sclo@centosproject.org' ],
-        [ 'Hyperscale',           'sig-hyperscale@centosproject.org' ],
+        [ 'Core',                   'sig-core@centosproject.org' ],
+        [ 'Config Management',      'sig-configmanagement@centosproject.org' ],
+        [ 'Software Collections',   'sig-sclo@centosproject.org' ],
+        [ 'Hyperscale',             'sig-hyperscale@centosproject.org' ],
+        [ 'Stream Feature Request', 'ENOSIG' ],
+        [ 'kmods',                  'sig-kmods@centosproject.org' ],
+        [ 'Automotive',             'jefro@redhat.com' ],
     ],
 
     2 => [
@@ -93,7 +96,8 @@ See https://wiki.centos.org/SpecialInterestGroup/Promo/Blog for details
 about posting to the CentOS blog.
 
 The report will be included in the $month community newsletter. As
-such I need it by $month 1st, at the very latest.
+such I need it by $month 3rd, at the very latest.
+
 
 Thanks!
 
@@ -105,3 +109,5 @@ print "Summary: reports expected from\n";
 foreach my $sig (@sigs) {
     print "  * $sig\n";
 }
+
+
