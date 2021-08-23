@@ -62,7 +62,7 @@ def read_release_feed():
         count = 0
         feed = feedparser.parse(feedbase + f + '.xml')
         print("Checking new packages in " + f + "                         ", end="\r")
-        out.write("New packages in " + f + ":")
+        out.write("\n\nNew packages in " + f + ":")
         html.write("<a name='" + f + "'><h2>New packages in " + f + "</h2></a>")
 
         for release in feed['entries']:
@@ -117,9 +117,9 @@ def format_release( release ):
     """ Drop everything past the first (most recent) Change Log: entry """
     summary = re.sub('(Change Log:\n\n.*?)\n\n.*$', r'\1', summary, flags=re.S)
 
-    out.write(summary)
+    # out.write(summary)
     html.write(release['summary'])
-    out.write("\n\n")
+    # out.write("\n\n")
     html.write("\n\n")
     print(".", end ="", flush=True)
 
