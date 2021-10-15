@@ -72,8 +72,9 @@ def read_release_feed():
                 count += 1
 
         if (count == 0):
-            out.write("\nNo new packages in " + f + "\n\n")
-            html.write("<p>No new packages in " + f + "</p>\n")
+            msg = "No new packages in " + f  + " since last scan."
+            out.write("\n" + msg + "\n\n")
+            html.write("<p>" + msg + "</p>\n")
 
     print("See rss_updates.txt and rss_updates.html for results                                           \n")
 
@@ -117,9 +118,7 @@ def format_release( release ):
     """ Drop everything past the first (most recent) Change Log: entry """
     summary = re.sub('(Change Log:\n\n.*?)\n\n.*$', r'\1', summary, flags=re.S)
 
-    # out.write(summary)
     html.write(release['summary'])
-    # out.write("\n\n")
     html.write("\n\n")
     print(".", end ="", flush=True)
 
