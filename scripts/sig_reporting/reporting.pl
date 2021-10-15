@@ -73,6 +73,9 @@ To: $email
 
 Dear $name SIG,
 
+(This is earlier than normal since I'll be at All Things Open next week,
+and will be off the week after that.)
+
 As documented in the wiki, we request that each SIG reports quarterly
 about the accomplishments of their SIG during the previous quarter.
 
@@ -96,7 +99,7 @@ See https://wiki.centos.org/SpecialInterestGroup/Promo/Blog for details
 about posting to the CentOS blog.
 
 The report will be included in the $month community newsletter. As
-such I need it by $month 3rd, at the very latest.
+such I need it by $month 1st, at the very latest.
 
 
 Thanks!
