@@ -2,6 +2,17 @@
 use strict;
 use warnings;
 use DateTime;
+use Getopt::Long qw(GetOptions);
+use Term::ANSIColor;
+
+my $help = 0;
+my $t = 0;
+GetOptions(
+    "help" => \$help,
+    "this" => \$t, # Defaults to NEXT month
+);
+
+help() if $help;
 
 my %reporters = (
     1 => [
@@ -40,10 +51,11 @@ my @sigs;
 # Weirdly, just doing month+1 can sometimes skip past a shorter month.
 # eg, March 31 + 1 month puts you in May, not April.
 my $today = DateTime->now( time_zone => 'local' );
-my $dt =
-  DateTime->new( day   => 1, 
-                 month => $today->month(), 
-                 year  => $today->year() ) -> add( months => 1 );
+my $dt = DateTime->new(
+    day   => 1,
+    month => $today->month(),
+    year  => $today->year()
+)->add( months => ( $t ? 0 : 1 ) ); # Defaults to next month
 
 my $month = $dt->month_name;
 print "Next month is $month.\n";
@@ -57,6 +69,10 @@ foreach my $sig ( @{ $reporters{$group} } ) {
     push @sigs, $sig->[0];
 }
 
+# When is the first Monday?
+my $dow = $dt->day_of_week;  # 1-7 (Monday is 1)
+my $first_monday = ( $dow == 1 ) ? 1 : (9 - $dow);
+
 print "\n";
 
 print "Send the following reminders to these SIGs\n";
@@ -65,6 +81,9 @@ foreach my $sig ( @{ $reporters{$group} } ) {
     my $name  = $sig->[0];
     my $email = $sig->[1];
 
+# TODO: Calculate the first Monday of the month, rather than editing
+# this every time.
+
     print qq~
 --------------------------------------------------
 
@@ -72,9 +91,6 @@ SUBJECT: CentOS $name SIG quarterly report for $month newsletter
 To: $email
 
 Dear $name SIG,
-
-(This is earlier than normal since I'll be at All Things Open next week,
-and will be off the week after that.)
 
 As documented in the wiki, we request that each SIG reports quarterly
 about the accomplishments of their SIG during the previous quarter.
@@ -99,8 +115,7 @@ See https://wiki.centos.org/SpecialInterestGroup/Promo/Blog for details
 about posting to the CentOS blog.
 
 The report will be included in the $month community newsletter. As
-such I need it by $month 1st, at the very latest.
-
+such I need it by Monday $month $first_monday, at the very latest.
 
 Thanks!
 
@@ -108,9 +123,23 @@ Thanks!
 
 }
 
-print "Summary: reports expected from\n";
+print "Summary: reports expected for $month:\n";
 foreach my $sig (@sigs) {
     print "  * $sig\n";
 }
 
+# Usage reminder
+unless ($t) {
+    print color("bold red");
+    print "\nNote: Use -t to run for THIS month. Defaults to NEXT month.\n\n";
+    print color('reset');
+}
+
+sub help {
+    print "\nNote: Use -t to run for THIS month. Defaults to NEXT month.\n";
+    print "Usage: $0\n";
+    print " use -t to run for THIS month\n";
+    print "Defaults to NEXT month if run without -t.\n";
+    exit();
+}
 
