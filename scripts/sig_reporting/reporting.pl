@@ -58,7 +58,7 @@ my $dt = DateTime->new(
 )->add( months => ( $t ? 0 : 1 ) ); # Defaults to next month
 
 my $month = $dt->month_name;
-print "Next month is $month.\n";
+print "Reports due for $month.\n";
 
 my $group = ( ( $dt->month() % 3 ) || 3 );
 
