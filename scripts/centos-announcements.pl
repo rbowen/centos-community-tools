@@ -104,7 +104,7 @@ We issued the following $acro (CentOS Errata and $name Advisories) during $month
 
 sub help {
     print "Usage: $0 YEAR MONTH - eg, $0 2018 September\n";
-    print "Defaults to current month of none specified.\n";
+    print "Defaults to current month if none specified.\n";
     exit();
 }
 
