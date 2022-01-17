@@ -9,7 +9,7 @@ db_connection = sqlite3.connect('centos_update_rss.sqlite')
 db = db_connection.cursor()
 
 # Uncomment this line to start with a fresh database
-# db.execute('DROP TABLE centosupdates')
+db.execute('DROP TABLE centosupdates')
 
 db.execute('CREATE TABLE IF NOT EXISTS centosupdates (title TEXT, id TEXT)')
 out  = open('rss_updates.txt', 'w')
@@ -20,26 +20,7 @@ def read_release_feed():
     feedbase = 'https://feeds.centos.org/';
     feeds = [
 
-            # 8-x86-64
-            'centos-8-x86_64-BaseOS',
-            'centos-8-x86_64-AppStream',
-            'centos-8-x86_64-PowerTools',
-            'centos-8-x86_64-centosplus',
-            'centos-8-x86_64-cr',
-
-            # 8 everything else
-            'centos-8-aarch64-BaseOS',
-            'centos-8-aarch64-AppStream',
-            'centos-8-aarch64-PowerTools',
-            'centos-8-aarch64-centosplus',
-            'centos-8-aarch64-cr',
-            'centos-8-ppc64le-AppStream',
-            'centos-8-ppc64le-BaseOS',
-            'centos-8-ppc64le-PowerTools',
-            'centos-8-ppc64le-centosplus',
-            'centos-8-ppc64le-cr',
-
-            # Stream
+            # Stream 8
             'centos-8-stream-aarch64-BaseOS',
             'centos-8-stream-aarch64-AppStream',
             'centos-8-stream-aarch64-PowerTools',
@@ -48,7 +29,21 @@ def read_release_feed():
             'centos-8-stream-ppc64le-PowerTools',
             'centos-8-stream-x86_64-AppStream',
             'centos-8-stream-x86_64-BaseOS',
-            'centos-8-stream-x86_64-PowerTools'
+            'centos-8-stream-x86_64-PowerTools',
+
+            # Stream 9
+            'centos-9-stream-aarch64-AppStream',
+            'centos-9-stream-aarch64-BaseOS',
+            'centos-9-stream-aarch64-CRB',
+            'centos-9-stream-ppc64le-AppStream',
+            'centos-9-stream-ppc64le-BaseOS',
+            'centos-9-stream-ppc64le-CRB',
+            'centos-9-stream-s390x-AppStream',
+            'centos-9-stream-s390x-BaseOS',
+            'centos-9-stream-s390x-CRB',
+            'centos-9-stream-x86_64-AppStream',
+            'centos-9-stream-x86_64-BaseOS',
+            'centos-9-stream-x86_64-CRB'
 
             ]
 
