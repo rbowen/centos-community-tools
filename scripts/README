@@ -1,0 +1,6 @@
+Various scripts that are used around the CentOS community.
+
+Stuff you might need to install:
+
+dnf install python3-feedparser
+
